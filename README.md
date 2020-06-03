@@ -71,10 +71,17 @@ MediaSelector.get()
     }
 ```
 
+## 效果图
+![图片1](https://github.com/cmcy/media-selector/blob/master/screenshot/Screenshot_20200602_195058_com.example.applicatio.jpg)
+![图片2](https://github.com/cmcy/media-selector/blob/master/screenshot/Screenshot_20200602_195110_com.example.applicatio.jpg)
+![图片3](https://github.com/cmcy/media-selector/blob/master/screenshot/Screenshot_20200602_195124_com.example.applicatio.jpg)
+![图片4](https://github.com/cmcy/media-selector/blob/master/screenshot/Screenshot_20200602_195134_com.example.applicatio.jpg)
+![图片5](https://github.com/cmcy/media-selector/blob/master/screenshot/Screenshot_20200602_195151_com.example.applicatio.jpg)
 
-## 截图预览
-![笔记列表](<img src="https://img-blog.csdnimg.cn/20200603150643621.jpg"   width="40%">)
-![照片选择](https://img-blog.csdnimg.cn/20200603150643728.jpg)
+
+## CSDN地址
+https://blog.csdn.net/u012364659/article/details/106523681
+
 
 
 
