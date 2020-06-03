@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_all_picture">所有图片</string>
+    <string name="folder_all_video">所有视频</string>
+    <string name="media_preview">预览</string>
+    <string name="shoot_picture">拍摄照片</string>
+    <string name="shoot_video">拍摄视频</string>
+    <string name="msg_amount_limit">超过最大选择数量</string>
+
+
+</resources>

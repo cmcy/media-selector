@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_translucence_gray">#55B8B8B8</color>
+    <color name="color_folder_bg">#999999</color>
+    <color name="color_placeholder_bg">#323232</color>
+</resources>
