@@ -48,11 +48,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 clickType = 1;
 
                 MediaSelector.get()
-                        .showCamera(true)
-                        .setMaxCount(20)
-                        .setMediaType(MediaSelector.PICTURE)
-                        .setDefaultList(imageAdapter.getSelect())
-                        .setListener(this)
+                        .showCamera(true)//默认显示，可以不用设置
+                        .setSelectMode(MediaSelector.MODE_MULTI)//默认多选
+                        .setMaxCount(20)//默认最多选择5张，设置单选后此设置无效
+                        .setMediaType(MediaSelector.PICTURE)//默认选择图片
+                        .setDefaultList(imageAdapter.getSelect())//默认选中的图片/视频
+                        .setListener(this)//选择完成的回调
                         .jump(this);
 
                 break;
