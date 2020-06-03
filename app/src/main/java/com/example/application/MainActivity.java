@@ -1,11 +1,14 @@
 package com.example.application;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setMaxCount(20)//默认最多选择5张，设置单选后此设置无效
                         .setMediaType(MediaSelector.PICTURE)//默认选择图片
                         .setDefaultList(imageAdapter.getSelect())//默认选中的图片/视频
-                        .setListener(this)//选择完成的回调
+                        .setListener(this)//选择完成的回调, （可以设置回调或者用onActivityResult方式接收）
                         .jump(this);
 
                 break;
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //使用回调的方式接收
     @Override
     public void onMediaResult(List<String> resultList) {
         List<MediaPickBean> beanList = new ArrayList<>();
@@ -90,6 +94,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(mediaPickAdapter != null){
             mediaPickAdapter.addAll(beanList);
+        }
+    }
+
+    //使用onActivityResult方式接收
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == MediaSelector.REQUEST_IMAGE && resultCode == RESULT_OK){
+
+            List<String> resultList = data.getStringArrayListExtra(MediaSelector.EXTRA_RESULT);
+
+            Log.e("TAG", "size-->" + resultList.size());
         }
     }
 }
