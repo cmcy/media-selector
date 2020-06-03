@@ -46,6 +46,16 @@ MediaSelector.get()
             .jump(this);
 ```
 
+使用回调的方式接收返回图片/视频
+```
+.setListener(new MediaSelector.MediaSelectorListener() {
+    @Override
+    public void onMediaResult(List<String> resultList) {
+        //选择的图片/视频
+    }
+})
+```
+
 使用onActivityResult方式接收返回图片/视频
 ```
 @Override
