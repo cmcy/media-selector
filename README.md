@@ -33,8 +33,51 @@ dependencies {
 }
 ```
 
+
 ## 具体使用
-详细使用方式：
+
+#### 在AndroidManifest中配置activity
+
+  第一个是选择的界面，第二个是预览的界面，第三个是图片剪切的界面
+```
+        <activity
+            android:name="com.cmcy.medialib.MultiSelectorActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name="com.cmcy.medialib.PhotoPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.cmcy.medialib.clipimage.ClipImageActivity"
+            android:configChanges="keyboardHidden|orientation|navigation"
+            android:screenOrientation="portrait"/>
+```
+
+  如果项目没有配置FileProvider，则需要配置一下
+
+```
+        <application
+            ...
+            android:requestLegacyExternalStorage="true">
+        
+            <provider
+                android:name="androidx.core.content.FileProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        
+        </application>
+```
+
+  android 10.0需要在application加上android:requestLegacyExternalStorage="true"
+
+
+
+#### 详细使用方式：
 ```
 MediaSelector.get()
             .showCamera(true)//默认显示，可以不用设置
