@@ -73,8 +73,8 @@ MediaSelector.get()
 
 
 ## 截图预览
-
-<img src="https://img-blog.csdnimg.cn/20200603150643621.jpg"   width="40%">
+![笔记列表](<img src="https://img-blog.csdnimg.cn/20200603150643621.jpg"   width="40%">)
+![照片选择](https://img-blog.csdnimg.cn/20200603150643728.jpg)
 
 
 
