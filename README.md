@@ -29,7 +29,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.cmcy:media-selector:1.0.2'
+    implementation 'com.github.cmcy:media-selector:1.0.3'
 }
 ```
 
