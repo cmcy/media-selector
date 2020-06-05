@@ -154,7 +154,7 @@ public class MultiSelectorActivity extends FragmentActivity implements View.OnCl
         if(mediaType == MediaSelector.PICTURE && selectMode == MediaSelector.MODE_CLIPL)//图片剪裁模式
         {
             Intent intent = new Intent();
-            intent.putExtra("temp_file_path", path);
+            intent.putExtra(ClipImageActivity.TEMP_FILE_PATH, path);
             intent.setClass(this, ClipImageActivity.class);
             startActivityForResult(intent, REQUEST_CLIPL_IMAGE);
 
@@ -177,7 +177,7 @@ public class MultiSelectorActivity extends FragmentActivity implements View.OnCl
         }
     }
 
-    //拍照返回数据
+    //图片剪裁返回数据
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
