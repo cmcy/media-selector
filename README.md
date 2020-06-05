@@ -119,13 +119,13 @@ MediaSelector.get()
 
 <img src="https://github.com/cmcy/media-selector/blob/master/screenshot/Screenshot_20200602_195134_com.example.applicatio.jpg"   width="30%"> <img src="https://github.com/cmcy/media-selector/blob/master/screenshot/Screenshot_20200602_195151_com.example.applicatio.jpg"   width="30%">
 
+
 ## CSDN地址
 https://blog.csdn.net/u012364659/article/details/106523681
 
 
 
-
-### 具体的使用方式，请参考Demo代码。
+### 具体的使用方式，请参考Demo代码。觉得不错的可以点点star
 
 ## License
 
