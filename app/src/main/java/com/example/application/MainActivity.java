@@ -1,13 +1,13 @@
 package com.example.application;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Utils.setStatusBarColor(this, getResources().getColor(R.color.colorPrimary));
         setContentView(R.layout.activity_main);
+
 
         RecyclerView rv_image_list = findViewById(R.id.rv_image_list);
         RecyclerView rv_video_list = findViewById(R.id.rv_video_list);

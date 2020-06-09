@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-
 import com.cmcy.medialib.R;
 import com.cmcy.medialib.utils.ImageUtils;
 import com.cmcy.medialib.utils.Utils;

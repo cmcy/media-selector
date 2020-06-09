@@ -2,16 +2,15 @@ package com.cmcy.medialib.presenter;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
-import androidx.fragment.app.FragmentActivity;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
-
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 
 import com.cmcy.medialib.bean.Folder;
 import com.cmcy.medialib.bean.Image;
@@ -34,7 +33,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MediaPresenter implements MediaContract.MediaModel
 {
-    private Activity mContext;
+    private Context mContext;
 
     private MediaContract.MediaView mediaView;
 

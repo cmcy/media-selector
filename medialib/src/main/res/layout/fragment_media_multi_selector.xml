@@ -14,7 +14,7 @@
         android:paddingTop="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="?android:attr/actionBarSize"
+        android:paddingBottom="?attr/actionBarSize"
         android:listSelector="@android:color/transparent"
         android:clipToPadding="false"
         android:numColumns="auto_fit"
@@ -42,7 +42,7 @@
         android:background="#cc000000"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize">
 
         <Button
             android:id="@+id/category_btn"

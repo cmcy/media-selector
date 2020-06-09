@@ -16,16 +16,16 @@ package com.cmcy.medialib.utils.permission;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -374,8 +374,8 @@ public class RxPermissions {
     }
 
 
-    public static boolean lacksPermission(Activity activity, String permission) {
-        return ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_DENIED;
+    public static boolean lacksPermission(Context context, String permission) {
+        return ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_DENIED;
     }
 
     @FunctionalInterface

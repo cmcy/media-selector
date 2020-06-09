@@ -9,7 +9,7 @@
 
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_image_list"
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
 
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_video_list"
         android:layout_marginTop="15dp"
         android:paddingLeft="7dp"
