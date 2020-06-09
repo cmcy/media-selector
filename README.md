@@ -9,7 +9,8 @@
 ### 注意事项
 
 - lib中的权限请求用的是github开源的RxPermissions，本地对源码做了些修改
-- demo开发环境为 AS 3.6.3 + Gradle 5.6.4  compileSDK 29 使用的androidx，导入项目报版本错误时，请手动修改为自己的版本。
+- master分支开发环境为 AS 3.6.3 + Gradle 5.6.4  compileSDK 29 使用的androidx，导入项目报版本错误时，请手动修改为自己的版本。
+- 使用Android support的开发者请切换到master-support分支
 - 请参考Demo的实现，进行了解本库。可以使用Gradle引入，也可以下载源码进行修改。
 - 如有问题，欢迎提出。** 如有问题可在issues留言或者发送到邮箱bxqn1404@163.com。**
 
@@ -29,7 +30,11 @@ allprojects {
 }
 
 dependencies {
+    // For developers using AndroidX in their applications
     implementation 'com.github.cmcy:media-selector:1.0.3'
+ 
+    // For developers using the Android Support Library
+    implementation 'com.github.cmcy:media-selector:0.0.1'
 }
 ```
 
