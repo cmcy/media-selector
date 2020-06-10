@@ -31,7 +31,7 @@ allprojects {
 
 dependencies {
     // For developers using AndroidX in their applications
-    implementation 'com.github.cmcy:media-selector:2.0.0'
+    implementation 'com.github.cmcy:media-selector:2.0.1'
  
     // For developers using the Android Support Library
     implementation 'com.github.cmcy:media-selector:1.1.1'
