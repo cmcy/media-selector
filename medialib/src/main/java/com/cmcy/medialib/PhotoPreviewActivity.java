@@ -6,10 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.cmcy.medialib.utils.Utils;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
@@ -60,12 +57,18 @@ public class PhotoPreviewActivity extends Activity
 			imageViewPreview.setVisibility(View.VISIBLE);
 			videoplayer.setVisibility(View.GONE);
 
-			Glide.with(this).load(url+"")
-					.downloadOnly(new SimpleTarget<File>() {
-				@Override
-				public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
-					imageViewPreview.setImage(ImageSource.uri(Uri.fromFile(resource)));
-				}});
+			observeOnDataChange = Observable.just(url+"").subscribeOn(Schedulers.io())
+					.map(url -> {
+						File sourceFile = Glide.with(PhotoPreviewActivity.this).asFile().load(url).submit().get();
+
+						if(sourceFile == null || !sourceFile.exists()){
+							return "";
+						}
+						return sourceFile.getAbsolutePath();
+					}).observeOn(AndroidSchedulers.mainThread()).subscribe(path -> {
+						File resource = new File(path);
+						imageViewPreview.setImage(ImageSource.uri(Uri.fromFile(resource)));
+					});
 		}
 		else
 		{

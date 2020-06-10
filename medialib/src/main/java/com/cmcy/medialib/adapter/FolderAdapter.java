@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.cmcy.medialib.R;
 import com.cmcy.medialib.bean.Folder;
 import com.cmcy.medialib.utils.MediaSelector;
@@ -155,13 +156,15 @@ public class FolderAdapter extends BaseAdapter {
                 }
                 else
                 {
+                    RequestOptions options = new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.DATA)
+                            .placeholder(R.color.color_folder_bg)
+                            .error(R.color.color_folder_bg)
+                            .centerCrop();
+
                     Glide.with(mContext)
                             .load(data.cover.path)
-                            .error(R.color.color_folder_bg)
-                            .placeholder(R.color.color_folder_bg)
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .centerCrop()
-                            .crossFade()
+                            .apply(options)
                             .into(cover);
                 }
 

@@ -17,7 +17,6 @@ import android.view.View.OnTouchListener;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
-
 import java.io.ByteArrayOutputStream;
 
 /**

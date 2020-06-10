@@ -123,13 +123,12 @@ public class MediaPickAdapter extends RecyclerView.Adapter<MediaPickAdapter.View
         }
         else {
             holder.play.setVisibility(View.GONE);
+
             Glide.with(mContext)
                     .load(imgPicBean.getUri())
                     .error(com.cmcy.medialib.R.color.color_placeholder_bg)
                     .placeholder(com.cmcy.medialib.R.color.color_placeholder_bg)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .centerCrop()
-                    .crossFade()
                     .into(holder.image);
         }
 

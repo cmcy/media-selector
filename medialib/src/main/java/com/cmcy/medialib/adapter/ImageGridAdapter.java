@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.cmcy.medialib.R;
 import com.cmcy.medialib.bean.Image;
 import com.cmcy.medialib.utils.MediaSelector;
@@ -223,13 +224,15 @@ public class ImageGridAdapter extends BaseAdapter {
             }
             else
             {
+                RequestOptions options = new RequestOptions()
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .placeholder(R.color.color_placeholder_bg)
+                        .error(R.color.color_placeholder_bg)
+                        .centerCrop();
+
                 Glide.with(mContext)
                         .load(data.path)
-                        .error(R.color.color_placeholder_bg)
-                        .placeholder(R.color.color_placeholder_bg)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                        .centerCrop()
-                        .crossFade()
+                        .apply(options)
                         .into(image);
             }
 
