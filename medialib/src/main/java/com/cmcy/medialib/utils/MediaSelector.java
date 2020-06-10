@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.cmcy.medialib.MultiSelectorActivity;
-import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.cmcy.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -10,7 +10,8 @@ import android.widget.Toast;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import com.cmcy.rxpermissions2.RxPermissions;
 
 import java.io.File;
 
@@ -38,6 +39,7 @@ public class CameraJump
     public static void showCameraAction(Activity activity, int type) {
         disposable = RxPermissions.request(activity, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
+                    Utils.dispose(disposable);
                     if (granted) {
                         startCamera(activity, type);
                     } else {
@@ -54,6 +56,7 @@ public class CameraJump
     public static void showCameraAction(Fragment fragment, int type) {
         disposable = RxPermissions.request(fragment, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(granted -> {
+                    Utils.dispose(disposable);
                     if (granted) {
                         startCamera(fragment, type);
                     } else {
