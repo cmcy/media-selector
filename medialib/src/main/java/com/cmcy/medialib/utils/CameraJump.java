@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
-import com.cmcy.medialib.utils.permission.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
 
