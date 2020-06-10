@@ -41,7 +41,7 @@ dependencies {
 
     implementation project(':medialib')
 
-//    implementation 'com.github.cmcy:media-selector:1.0.x'
+//    implementation 'com.github.cmcy:media-selector:2.0.0'
 
 
     implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
