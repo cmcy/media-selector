@@ -11,9 +11,7 @@ import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.cmcy.medialib.PhotoPreviewActivity;
 import com.cmcy.medialib.utils.Utils;
 
@@ -125,13 +123,12 @@ public class MediaPickAdapter extends RecyclerView.Adapter<MediaPickAdapter.View
         }
         else {
             holder.play.setVisibility(View.GONE);
+
             Glide.with(mContext)
                     .load(imgPicBean.getUri())
                     .error(com.cmcy.medialib.R.color.color_placeholder_bg)
                     .placeholder(com.cmcy.medialib.R.color.color_placeholder_bg)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .centerCrop()
-                    .crossFade()
                     .into(holder.image);
         }
 
