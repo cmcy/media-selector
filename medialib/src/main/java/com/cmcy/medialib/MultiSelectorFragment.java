@@ -11,17 +11,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListPopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmcy.medialib.adapter.FolderAdapter;
 import com.cmcy.medialib.adapter.ImageGridAdapter;
@@ -43,7 +43,7 @@ import java.util.List;
   * Author : Cybing
   * Date : 2020/6/2 11:46
  */
-public class MultiSelectorFragment extends Fragment implements MediaContract.MediaView
+public class MultiSelectorFragment extends Fragment implements MediaContract.MediaView, ImageGridAdapter.ItemCallback
 {
     protected final String TAG = this.getClass().getName();
 
@@ -53,7 +53,8 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
     private ArrayList<String> resultList = new ArrayList<String>();
 
     // 图片Grid
-    private GridView mGridView;
+    private RecyclerView recyclerView;
+
     private Callback mCallback;
 
     private ImageGridAdapter mImageAdapter;
@@ -78,6 +79,8 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
     private boolean mIsShowCamera = false;
 
     private MediaPresenter mediaPresenter;
+
+    private GridLayoutManager gridLayoutManager;
 
     @Override
     public void onAttach(Activity activity) {
@@ -125,7 +128,7 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
 
         // 是否显示照相机
         mIsShowCamera = getArguments().getBoolean(MediaSelector.EXTRA_SHOW_CAMERA, true);
-        mImageAdapter = new ImageGridAdapter(getActivity(), mIsShowCamera);
+        mImageAdapter = new ImageGridAdapter(getActivity(), mIsShowCamera, this);
         mImageAdapter.setMediaType(mediaType);
         // 是否显示选择指示器
         mImageAdapter.showSelectIndicator(selectMode == MediaSelector.MODE_MULTI);
@@ -170,47 +173,38 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
                 // 预览
             }
         });
+        recyclerView = view.findViewById(R.id.rv_grid);
+        gridLayoutManager = new GridLayoutManager(getActivity(), Utils.calculateNoOfColumns(getActivity(), 120));
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setAdapter(mImageAdapter);
 
-        mGridView = (GridView) view.findViewById(R.id.grid);
-        mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int state) {
-                if(state == SCROLL_STATE_IDLE){
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
                     // 停止滑动，日期指示器消失
                     mTimeLineText.setVisibility(View.GONE);
-                }else if(state == SCROLL_STATE_FLING){
+                }else if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
                     mTimeLineText.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                //获得当前显示在第一个item的位置
+                int firstItemPosition = gridLayoutManager.findFirstVisibleItemPosition();
+
+                Log.e("tag", "Position------>" + firstItemPosition);
+
                 if(mTimeLineText.getVisibility() == View.VISIBLE) {
-                    int index = firstVisibleItem + 1 == view.getAdapter().getCount() ? view.getAdapter().getCount() - 1 : firstVisibleItem + 1;
-                    Image image = (Image) view.getAdapter().getItem(index);
+                    int index = firstItemPosition == mImageAdapter.getItemCount()-1 ? mImageAdapter.getItemCount() - 1 : firstItemPosition + 1;
+                    Image image = mImageAdapter.getItem(index);
                     if (image != null) {
                         mTimeLineText.setText(Utils.formatPhotoDate(image.path));
                     }
-                }
-            }
-        });
-        mGridView.setAdapter(mImageAdapter);
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(mImageAdapter.isShowCamera()){
-                    // 如果显示照相机，则第一个Grid显示为照相机，处理特殊逻辑
-                    if(i == 0){
-                        CameraJump.showCameraAction(MultiSelectorFragment.this, mediaType);
-                    }else{
-                        // 正常操作
-                        Image image = (Image) adapterView.getAdapter().getItem(i);
-                        selectImageFromGrid(image, selectMode);
-                    }
-                }else{
-                    // 正常操作
-                    Image image = (Image) adapterView.getAdapter().getItem(i);
-                    selectImageFromGrid(image, selectMode);
                 }
             }
         });
@@ -226,9 +220,9 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
         mFolderPopupWindow = new ListPopupWindow(getActivity());
         mFolderPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
         mFolderPopupWindow.setAdapter(mFolderAdapter);
-        mFolderPopupWindow.setContentWidth(mGridView.getWidth());
-        mFolderPopupWindow.setWidth(mGridView.getWidth());
-        mFolderPopupWindow.setHeight(mGridView.getHeight() * 5 / 8);
+        mFolderPopupWindow.setContentWidth(recyclerView.getWidth());
+        mFolderPopupWindow.setWidth(recyclerView.getWidth());
+        mFolderPopupWindow.setHeight(recyclerView.getHeight() * 5 / 8);
         mFolderPopupWindow.setAnchorView(mPopupAnchorView);
         mFolderPopupWindow.setModal(true);
         mFolderPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -268,7 +262,7 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
                         }
 
                         // 滑动到最初始位置
-                        mGridView.smoothScrollToPosition(0);
+                        recyclerView.smoothScrollToPosition(0);
                     }
                 }, 100);
 
@@ -305,6 +299,10 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
                 mFolderPopupWindow.dismiss();
             }
         }
+
+        //横竖屏切换重新设置列数
+        gridLayoutManager.setSpanCount(Utils.calculateNoOfColumns(getActivity(), 120));
+
         super.onConfigurationChanged(newConfig);
     }
 
@@ -385,6 +383,17 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
     @Override
     public int getLoaderModel() {
         return LOADER_ALL;
+    }
+
+    @Override
+    public void cameraClick() {
+        CameraJump.showCameraAction(MultiSelectorFragment.this, mediaType);
+    }
+
+    @Override
+    public void itemClick(int position) {
+        Image image = mImageAdapter.getItem(position);
+        selectImageFromGrid(image, selectMode);
     }
 
 

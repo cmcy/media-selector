@@ -5,24 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <GridView
-        android:id="@+id/grid"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:horizontalSpacing="8dp"
-        android:verticalSpacing="8dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:paddingBottom="?android:attr/actionBarSize"
-        android:listSelector="@android:color/transparent"
         android:clipToPadding="false"
-        android:numColumns="auto_fit"
-        android:columnWidth="120dp"
-        android:stretchMode="columnWidth"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbarThumbVertical="@color/color_translucence_gray"
-        android:gravity="center"/>
+        android:scrollbars="vertical"/>
+
 
     <TextView
         android:id="@+id/timeline_area"

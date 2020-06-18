@@ -7,6 +7,7 @@ import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.Window;
 
 import java.io.File;
@@ -173,7 +174,18 @@ public class Utils {
 
 
 
-
+    /**
+     * RecyclerView GridLayoutManager item数量根据屏幕大小来显示
+     * @param context
+     * @param columnWidthDp
+     * @return
+     */
+    public static int calculateNoOfColumns(Context context, float columnWidthDp) { // For example columnWidthdp=180
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (screenWidthDp / columnWidthDp + 0.5); // +0.5 for correct rounding to int.
+        return noOfColumns;
+    }
 
 
 

@@ -4,9 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -24,24 +25,33 @@ import java.util.List;
   * Author : Cybing
   * Date : 2020/6/2 11:47
  */
-public class ImageGridAdapter extends BaseAdapter {
+public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_CAMERA = 0;
     private static final int TYPE_NORMAL = 1;
 
     private Context mContext;
 
-    private LayoutInflater mInflater;
     private boolean showCamera = true;
     private boolean showSelectIndicator = true;
 
     private List<Image> mImages = new ArrayList<Image>();
     private List<Image> mSelectedImages = new ArrayList<Image>();
     private int mediaType;
-    public ImageGridAdapter(Context context, boolean showCamera){
+
+    public interface ItemCallback{
+        //拍照点击
+        void cameraClick();
+        //正常item点击
+        void itemClick(int position);
+    }
+
+    private ItemCallback itemCallback;
+
+    public ImageGridAdapter(Context context, boolean showCamera, ItemCallback itemCallback){
         mContext = context;
-        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.showCamera = showCamera;
+        this.itemCallback = itemCallback;
     }
 
     public void setMediaType(int type)
@@ -123,25 +133,7 @@ public class ImageGridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    @Override
-    public int getViewTypeCount() {
-        return 2;
-    }
 
-    @Override
-    public int getItemViewType(int position) {
-        if(showCamera){
-            return position==0 ? TYPE_CAMERA : TYPE_NORMAL;
-        }
-        return TYPE_NORMAL;
-    }
-
-    @Override
-    public int getCount() {
-        return showCamera ? mImages.size()+1 : mImages.size();
-    }
-
-    @Override
     public Image getItem(int i) {
         if(showCamera){
             if(i == 0){
@@ -153,74 +145,67 @@ public class ImageGridAdapter extends BaseAdapter {
         }
     }
 
+
     @Override
-    public long getItemId(int i) {
-        return i;
+    public int getItemViewType(int position) {
+        if(showCamera){
+            return position==0 ? TYPE_CAMERA : TYPE_NORMAL;
+        }
+        return TYPE_NORMAL;
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public int getItemCount() {
+        return showCamera ? mImages.size()+1 : mImages.size();
+    }
 
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        switch (viewType)
+        {
+            case TYPE_CAMERA:
+                return new CameraHolder(LayoutInflater.from(mContext).inflate(R.layout.item_media_camera, parent, false));
+            case TYPE_NORMAL:
+                return new ImageHolder(LayoutInflater.from(mContext).inflate(R.layout.item_media_image, parent, false));
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int i)
+    {
         int type = getItemViewType(i);
         if(type == TYPE_CAMERA){
-            view = mInflater.inflate(R.layout.item_media_camera, viewGroup, false);
-            TextView title = (TextView) view.findViewById(R.id.title);
-            title.setText(mediaType == MediaSelector.PICTURE ? R.string.shoot_picture : R.string.shoot_video);
-            view.setTag(null);
+            CameraHolder cameraHolder = (CameraHolder) holder;
+            cameraHolder.title.setText(mediaType == MediaSelector.PICTURE ? R.string.shoot_picture : R.string.shoot_video);
+
         }else if(type == TYPE_NORMAL){
-            ViewHolder holde;
-            if(view == null){
-                view = mInflater.inflate(R.layout.item_media_image, viewGroup, false);
-                holde = new ViewHolder(view);
-            }else{
-                holde = (ViewHolder) view.getTag();
-                if(holde == null){
-                    view = mInflater.inflate(R.layout.item_media_image, viewGroup, false);
-                    holde = new ViewHolder(view);
-                }
-            }
+            ImageHolder imageHolder = (ImageHolder) holder;
+            imageHolder.itemView.setTag(i);
+            Image data = getItem(i);
 
-            holde.bindData(getItem(i));
-        }
-
-        return view;
-    }
-
-    class ViewHolder {
-        ImageView image;
-        ImageView indicator;
-        View mask;
-
-        ViewHolder(View view){
-            image = (ImageView) view.findViewById(R.id.image);
-            indicator = (ImageView) view.findViewById(R.id.checkmark);
-            mask = view.findViewById(R.id.mask);
-            view.setTag(this);
-        }
-
-        void bindData(final Image data){
-            if(data == null) return;
             // 处理单选和多选状态
             if(showSelectIndicator){
-                indicator.setVisibility(View.VISIBLE);
+                imageHolder.indicator.setVisibility(View.VISIBLE);
                 if(mSelectedImages.contains(data)){
                     // 设置选中状态
-                    indicator.setImageResource(R.drawable.ic_media_btn_selected);
-                    mask.setVisibility(View.VISIBLE);
+                    imageHolder.indicator.setImageResource(R.drawable.ic_media_btn_selected);
+                    imageHolder.mask.setVisibility(View.VISIBLE);
                 }else{
                     // 未选择
-                    indicator.setImageResource(R.drawable.ic_media_btn_unselected);
-                    mask.setVisibility(View.GONE);
+                    imageHolder.indicator.setImageResource(R.drawable.ic_media_btn_unselected);
+                    imageHolder.mask.setVisibility(View.GONE);
                 }
             }else{
-                indicator.setVisibility(View.GONE);
+                imageHolder.indicator.setVisibility(View.GONE);
             }
 
             if(mediaType == MediaSelector.VIDEO)
             {
-                image.setImageResource(R.color.color_placeholder_bg);
+                imageHolder.image.setImageResource(R.color.color_placeholder_bg);
                 if(data.bitmap != null)
-                    image.setImageBitmap(data.bitmap);
+                    imageHolder.image.setImageBitmap(data.bitmap);
             }
             else
             {
@@ -233,9 +218,42 @@ public class ImageGridAdapter extends BaseAdapter {
                 Glide.with(mContext)
                         .load(data.path)
                         .apply(options)
-                        .into(image);
+                        .into(imageHolder.image);
             }
+        }
+    }
 
+     class CameraHolder extends RecyclerView.ViewHolder{
+        TextView title;
+        CameraHolder(View view){
+            super(view);
+            title = view.findViewById(R.id.title);
+
+            view.setOnClickListener(v -> {
+                if(itemCallback != null){
+                    itemCallback.cameraClick();
+                }
+            });
+        }
+    }
+
+     class ImageHolder extends RecyclerView.ViewHolder{
+        ImageView image;
+        ImageView indicator;
+        View mask;
+
+        ImageHolder(View view){
+            super(view);
+            image = view.findViewById(R.id.image);
+            indicator = view.findViewById(R.id.checkmark);
+            mask = view.findViewById(R.id.mask);
+
+            view.setOnClickListener(v -> {
+                int position = Integer.parseInt(v.getTag().toString());
+                if(itemCallback != null){
+                    itemCallback.itemClick(position);
+                }
+            });
         }
     }
 
