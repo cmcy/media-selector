@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -80,15 +81,15 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     /**
      * 选择某个图片，改变选择状态
-     * @param image
+     * @param position
      */
-    public void select(Image image) {
-        if(mSelectedImages.contains(image)){
-            mSelectedImages.remove(image);
+    public void select(int position) {
+        if(mSelectedImages.contains(getItem(position))){
+            mSelectedImages.remove(getItem(position));
         }else{
-            mSelectedImages.add(image);
+            mSelectedImages.add(getItem(position));
         }
-        notifyDataSetChanged();
+        notifyItemChanged(position);
     }
 
     /**
@@ -187,28 +188,26 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             // 处理单选和多选状态
             if(showSelectIndicator){
-                imageHolder.indicator.setVisibility(View.VISIBLE);
+                imageHolder.checkBox.setVisibility(View.VISIBLE);
                 if(mSelectedImages.contains(data)){
                     // 设置选中状态
-                    imageHolder.indicator.setImageResource(R.drawable.ic_media_btn_selected);
+                    imageHolder.checkBox.setChecked(true);
                     imageHolder.mask.setVisibility(View.VISIBLE);
                 }else{
                     // 未选择
-                    imageHolder.indicator.setImageResource(R.drawable.ic_media_btn_unselected);
+                    imageHolder.checkBox.setChecked(false);
                     imageHolder.mask.setVisibility(View.GONE);
                 }
             }else{
-                imageHolder.indicator.setVisibility(View.GONE);
+                imageHolder.checkBox.setVisibility(View.GONE);
             }
 
-            if(mediaType == MediaSelector.VIDEO)
-            {
+            if(mediaType == MediaSelector.VIDEO) {
                 imageHolder.image.setImageResource(R.color.color_placeholder_bg);
                 if(data.bitmap != null)
                     imageHolder.image.setImageBitmap(data.bitmap);
             }
-            else
-            {
+            else {
                 RequestOptions options = new RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .placeholder(R.color.color_placeholder_bg)
@@ -239,13 +238,13 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
      class ImageHolder extends RecyclerView.ViewHolder{
         ImageView image;
-        ImageView indicator;
+        CheckBox checkBox;
         View mask;
 
         ImageHolder(View view){
             super(view);
             image = view.findViewById(R.id.image);
-            indicator = view.findViewById(R.id.checkmark);
+            checkBox = view.findViewById(R.id.checkbox);
             mask = view.findViewById(R.id.mask);
 
             view.setOnClickListener(v -> {

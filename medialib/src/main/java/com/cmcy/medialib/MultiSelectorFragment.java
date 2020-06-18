@@ -197,8 +197,6 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
                 //获得当前显示在第一个item的位置
                 int firstItemPosition = gridLayoutManager.findFirstVisibleItemPosition();
 
-                Log.e("tag", "Position------>" + firstItemPosition);
-
                 if(mTimeLineText.getVisibility() == View.VISIBLE) {
                     int index = firstItemPosition == mImageAdapter.getItemCount()-1 ? mImageAdapter.getItemCount() - 1 : firstItemPosition + 1;
                     Image image = mImageAdapter.getItem(index);
@@ -311,10 +309,10 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
      * 选择图片操作
      * @param image
      */
-    private void selectImageFromGrid(Image image, int mode) {
+    private void selectImageFromGrid(Image image, int position) {
         if(image != null) {
             // 多选模式
-            if(mode == MediaSelector.MODE_MULTI) {
+            if(selectMode == MediaSelector.MODE_MULTI) {
                 if (resultList.contains(image.path)) {
                     resultList.remove(image.path);
                     if(resultList.size() != 0) {
@@ -341,7 +339,7 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
                         mCallback.onImageSelected(image.path);
                     }
                 }
-                mImageAdapter.select(image);
+                mImageAdapter.select(position);
             }else{
                 // 单选模式
                 if(mCallback != null){
@@ -393,7 +391,7 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
     @Override
     public void itemClick(int position) {
         Image image = mImageAdapter.getItem(position);
-        selectImageFromGrid(image, selectMode);
+        selectImageFromGrid(image, position);
     }
 
 
