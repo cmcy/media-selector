@@ -43,6 +43,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<Image> mImages = new ArrayList<Image>();
     private List<Image> mSelectedImages = new ArrayList<Image>();
     private int mediaType;
+    private int selectMode;
 
     public interface ItemCallback{
         //拍照点击
@@ -62,6 +63,10 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void setMediaType(int type)
     {
         this.mediaType = type;
+    }
+
+    public void setSelectMode(int selectMode) {
+        this.selectMode = selectMode;
     }
 
     /**
@@ -255,10 +260,17 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             image.setOnClickListener(v -> {
                 Image data = getItem(position);
-                Intent intent = new Intent(mContext, PhotoPreviewActivity.class);
-                intent.putExtra("url", data.path);
-                intent.putExtra("type", mediaType);
-                mContext.startActivity(intent);
+
+                if(selectMode == MediaSelector.MODE_MULTI){
+                    Intent intent = new Intent(mContext, PhotoPreviewActivity.class);
+                    intent.putExtra("url", data.path);
+                    intent.putExtra("type", mediaType);
+                    mContext.startActivity(intent);
+                }else {
+                    if(itemCallback != null){
+                        itemCallback.itemClick(position);
+                    }
+                }
             });
 
             checkBox.setOnClickListener(v -> {

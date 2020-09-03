@@ -131,6 +131,7 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
         mIsShowCamera = getArguments().getBoolean(MediaSelector.EXTRA_SHOW_CAMERA, true);
         mImageAdapter = new ImageGridAdapter(getActivity(), mIsShowCamera, this);
         mImageAdapter.setMediaType(mediaType);
+        mImageAdapter.setSelectMode(selectMode);
         // 是否显示选择指示器
         mImageAdapter.showSelectIndicator(selectMode == MediaSelector.MODE_MULTI);
 
