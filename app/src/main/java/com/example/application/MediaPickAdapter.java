@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cmcy.medialib.PhotoPreviewActivity;
+import com.cmcy.medialib.utils.MediaSelector;
 import com.cmcy.medialib.utils.Utils;
 
 import java.util.ArrayList;
@@ -71,8 +72,7 @@ public class MediaPickAdapter extends RecyclerView.Adapter<MediaPickAdapter.View
 
     public void notifyBitmapData()
     {
-
-        if (mDataList.size() == 0 || meadeType == 1) return;
+        if (mDataList.size() == 0 || meadeType == MediaSelector.PICTURE) return;
 
         Utils.dispose(observeOnDataChange);
 
@@ -112,7 +112,7 @@ public class MediaPickAdapter extends RecyclerView.Adapter<MediaPickAdapter.View
     {
         MediaPickBean imgPicBean = mDataList.get(position);
 
-        if(meadeType == 2) {
+        if(meadeType == MediaSelector.VIDEO) {
             holder.play.setVisibility(View.VISIBLE);
             if (imgPicBean.getBitmap() != null) {
                 holder.image.setImageBitmap(imgPicBean.getBitmap());

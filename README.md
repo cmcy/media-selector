@@ -41,22 +41,6 @@ dependencies {
 
 ## 具体使用
 
-#### 在AndroidManifest中配置activity
-
-  第一个是选择的界面，第二个是预览的界面，第三个是图片剪切的界面
-```
-        <activity
-            android:name="com.cmcy.medialib.MultiSelectorActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity
-            android:name="com.cmcy.medialib.PhotoPreviewActivity"
-            android:configChanges="keyboardHidden|orientation|navigation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.cmcy.medialib.clipimage.ClipImageActivity"
-            android:configChanges="keyboardHidden|orientation|navigation"
-            android:screenOrientation="portrait"/>
-```
 
   如果项目没有配置FileProvider，则需要配置一下
 
@@ -84,14 +68,14 @@ dependencies {
 
 #### 详细使用方式：
 ```
-MediaSelector.get()
+MediaSelector.get(this)
             .showCamera(true)//默认显示，可以不用设置
             .setSelectMode(MediaSelector.MODE_MULTI)//默认多选
             .setMaxCount(20)//默认最多选择5张，设置单选后此设置无效
             .setMediaType(MediaSelector.PICTURE)//默认选择图片
             .setDefaultList(imageAdapter.getSelect())//默认选中的图片/视频
             .setListener(new MediaSelectorListener())//选择完成的回调, （可以设置回调或者用onActivityResult方式接收）
-            .jump(this);
+            .jump();
 ```
 
 使用回调的方式接收返回图片/视频

@@ -197,6 +197,6 @@ public class MultiSelectorActivity extends FragmentActivity implements View.OnCl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MediaSelector.clearBuilder();//退出时清除，解决按手机返回键退出后，下次进来builder不会重新构建
+        MediaSelector.clearBuilder();
     }
 }

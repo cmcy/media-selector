@@ -1,6 +1,7 @@
 package com.cmcy.medialib;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -83,10 +84,10 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
     private GridLayoutManager gridLayoutManager;
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
         try {
-            mCallback = (Callback) activity;
+            mCallback = (Callback) context;
         }catch (ClassCastException e){
             throw new ClassCastException("The Activity must implement MultiSelectorFragment.Callback interface...");
         }
@@ -105,7 +106,7 @@ public class MultiSelectorFragment extends Fragment implements MediaContract.Med
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mediaPresenter = new MediaPresenter(getActivity(), this);

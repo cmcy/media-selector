@@ -1,6 +1,8 @@
 package com.cmcy.medialib.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +10,13 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.cmcy.medialib.PhotoPreviewActivity;
 import com.cmcy.medialib.R;
 import com.cmcy.medialib.bean.Image;
 import com.cmcy.medialib.utils.MediaSelector;
@@ -150,7 +154,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemViewType(int position) {
         if(showCamera){
-            return position==0 ? TYPE_CAMERA : TYPE_NORMAL;
+            return position == 0 ? TYPE_CAMERA : TYPE_NORMAL;
         }
         return TYPE_NORMAL;
     }
@@ -161,20 +165,17 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        switch (viewType)
-        {
-            case TYPE_CAMERA:
-                return new CameraHolder(LayoutInflater.from(mContext).inflate(R.layout.item_media_camera, parent, false));
-            case TYPE_NORMAL:
-                return new ImageHolder(LayoutInflater.from(mContext).inflate(R.layout.item_media_image, parent, false));
+        if(viewType == TYPE_CAMERA ){
+            return new CameraHolder(LayoutInflater.from(mContext).inflate(R.layout.item_media_camera, parent, false));
+        }else {
+            return new ImageHolder(LayoutInflater.from(mContext).inflate(R.layout.item_media_image, parent, false));
         }
-        return null;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int i)
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int i)
     {
         int type = getItemViewType(i);
         if(type == TYPE_CAMERA){
@@ -183,7 +184,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         }else if(type == TYPE_NORMAL){
             ImageHolder imageHolder = (ImageHolder) holder;
-            imageHolder.itemView.setTag(i);
+            imageHolder.setPosition(i);
             Image data = getItem(i);
 
             // 处理单选和多选状态
@@ -240,6 +241,11 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ImageView image;
         CheckBox checkBox;
         View mask;
+        int position;
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
 
         ImageHolder(View view){
             super(view);
@@ -247,8 +253,15 @@ public class ImageGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             checkBox = view.findViewById(R.id.checkbox);
             mask = view.findViewById(R.id.mask);
 
-            view.setOnClickListener(v -> {
-                int position = Integer.parseInt(v.getTag().toString());
+            image.setOnClickListener(v -> {
+                Image data = getItem(position);
+                Intent intent = new Intent(mContext, PhotoPreviewActivity.class);
+                intent.putExtra("url", data.path);
+                intent.putExtra("type", mediaType);
+                mContext.startActivity(intent);
+            });
+
+            checkBox.setOnClickListener(v -> {
                 if(itemCallback != null){
                     itemCallback.itemClick(position);
                 }

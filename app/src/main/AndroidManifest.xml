@@ -36,19 +36,6 @@
             </intent-filter>
         </activity>
 
-        <!-- start -->
-        <activity
-            android:name="com.cmcy.medialib.MultiSelectorActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity
-            android:name="com.cmcy.medialib.PhotoPreviewActivity"
-            android:configChanges="keyboardHidden|orientation|navigation|screenSize"/>
-        <activity
-            android:name="com.cmcy.medialib.clipimage.ClipImageActivity"
-            android:configChanges="keyboardHidden|orientation|navigation"/>
-        <!-- end -->
-
-
     </application>
 
 </manifest>

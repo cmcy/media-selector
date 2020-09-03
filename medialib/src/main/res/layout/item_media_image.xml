@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:button="@null"
-            android:clickable="false"
             android:drawableStart="@drawable/cb_image_selector"/>
 
     </FrameLayout>

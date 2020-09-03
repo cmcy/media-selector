@@ -60,14 +60,17 @@ public class MediaSelector
         void onMediaResult(List<String> resultList);
     }
 
-    public static ImageBuilder get() {
-        return getBuilder();
+    public static ImageBuilder get(Activity activity) {
+        imageBuilder = new ImageBuilder(activity);
+        return imageBuilder;
+    }
+
+    public static ImageBuilder get(Fragment fragment) {
+        imageBuilder = new ImageBuilder(fragment);
+        return imageBuilder;
     }
 
     public static ImageBuilder getBuilder() {
-        if(imageBuilder == null){
-            imageBuilder = new ImageBuilder();
-        }
         return imageBuilder;
     }
 
@@ -75,7 +78,9 @@ public class MediaSelector
      * 清除构造器
      */
     public static void clearBuilder() {
-        if(imageBuilder != null)imageBuilder.dispose();
+        if(imageBuilder != null){
+            imageBuilder.dispose();
+        }
         imageBuilder = null;
     }
 
@@ -89,6 +94,14 @@ public class MediaSelector
         private ArrayList<String> defaultList;
         private MediaSelectorListener listener;
         private Disposable disposable;
+
+        public ImageBuilder(Activity activity) {
+            this.activity = activity;
+        }
+
+        public ImageBuilder(Fragment fragment) {
+            this.fragment = fragment;
+        }
 
         public Activity getActivity() {
             return fragment != null ? fragment.getActivity() : activity;
@@ -192,22 +205,10 @@ public class MediaSelector
             return this;
         }
 
-
         /**
          * 跳转到相册
-         * @param activity activity
          */
-        public void jump(Activity activity){
-            setActivity(activity);
-            requestPermissions();
-        }
-
-        /**
-         * 跳转到相册
-         * @param fragment fragment
-         */
-        public void jump(Fragment fragment){
-            setFragment(fragment);
+        public void jump(){
             requestPermissions();
         }
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.cmcy.medialib.utils.MediaSelector;
 import com.cmcy.medialib.utils.Utils;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
@@ -52,7 +53,7 @@ public class PhotoPreviewActivity extends Activity
 		url = getIntent().getStringExtra("url");
 		type = getIntent().getIntExtra("type", 1);
 
-		if(type == 1)
+		if(type == MediaSelector.PICTURE)
 		{
 			imageViewPreview.setVisibility(View.VISIBLE);
 			videoplayer.setVisibility(View.GONE);
