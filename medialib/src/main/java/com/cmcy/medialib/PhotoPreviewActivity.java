@@ -60,12 +60,15 @@ public class PhotoPreviewActivity extends Activity
 
 			observeOnDataChange = Observable.just(url+"").subscribeOn(Schedulers.io())
 					.map(url -> {
-						File sourceFile = Glide.with(PhotoPreviewActivity.this).asFile().load(url).submit().get();
-
-						if(sourceFile == null || !sourceFile.exists()){
-							return "";
+						if(Utils.isHttpHead(url)){
+							File sourceFile = Glide.with(PhotoPreviewActivity.this).asFile().load(url).submit().get();
+							if(sourceFile == null || !sourceFile.exists()){
+								return "";
+							}
+							return sourceFile.getAbsolutePath();
+						}else {
+							return url;
 						}
-						return sourceFile.getAbsolutePath();
 					}).observeOn(AndroidSchedulers.mainThread()).subscribe(path -> {
 						File resource = new File(path);
 						imageViewPreview.setImage(ImageSource.uri(Uri.fromFile(resource)));
