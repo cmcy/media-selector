@@ -96,8 +96,7 @@ public class MultiSelectorActivity extends FragmentActivity implements View.OnCl
                 finish();
             }
         }else if(v.getId() == R.id.btn_back){
-
-            setResult(RESULT_CANCELED);
+            clearBuilder();
             finish();
         }
     }
@@ -175,6 +174,7 @@ public class MultiSelectorActivity extends FragmentActivity implements View.OnCl
         if(MediaSelector.getBuilder().getListener() != null){
             MediaSelector.getBuilder().getListener().onMediaResult(resultList);
         }
+        MediaSelector.clearBuilder();
     }
 
     //图片剪裁返回数据
@@ -195,8 +195,14 @@ public class MultiSelectorActivity extends FragmentActivity implements View.OnCl
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onBackPressed() {
+        clearBuilder();
+        super.onBackPressed();
+    }
+
+    //清除构造器
+    protected void clearBuilder() {
+        setResult(RESULT_CANCELED);
         MediaSelector.clearBuilder();
     }
 }
